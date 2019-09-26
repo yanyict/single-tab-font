@@ -17,6 +17,7 @@ const NewMenuManager = () => import('views/systmagpager/NewMenuManager') // 新�
 const InterfaceManeger = () => import('views/systmagpager/InterfaceManager') // 接口管理
 const DataDictionary = () => import('views/systmagpager/DataDictionary') // 接口管理
 const DataPermission = () => import('views/systmagpager/DataPermission') // 数据权限
+const DocumentStore = () => import('views/docmagpager/DocumentStore') // 用户管理
 
 const Home = () => import('views/homepager/Home') // 父组件
 Vue.use(Router)
@@ -49,7 +50,8 @@ export default new Router({
         {path: 'sys/urlmanager', meta: { name: 'URL管理' }, component: UrlManager},
         {path: 'sys/funmanager', meta: { name: '功能管理' }, component: FunManager},
         {path: 'sys/newmenumanager', meta: { name: '菜单管理' }, component: NewMenuManager},
-        {path: 'sys/interfacemanager', meta: { name: '接口管理' }, component: InterfaceManeger}
+        {path: 'sys/interfacemanager', meta: { name: '接口管理' }, component: InterfaceManeger},
+        {path: 'document/documentstore', meta: { name: '文档出入库管理' }, component: DocumentStore}
         // {path: 'kq/safetymanagemer', meta: { name: '安全管理' }, component: SafeManeger},
       ]
     }

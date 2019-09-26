@@ -4,6 +4,6 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  API_ROOT: '"//110.88.128.142:8099"',
-  TOPOLOGY_URL: '"http://localhost:8080/topology/"'
+  API_ROOT: '"//127.0.0.1:8080"',
+  TOPOLOGY_URL: '"http://127.0.0.1:8080/topology/"'
 })

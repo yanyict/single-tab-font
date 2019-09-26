@@ -43,8 +43,8 @@
               <el-form-item label="菜单图标" prop="icon">
                 <el-input v-model="selectedMenu.icon" placeholder="请输入图标" :maxlength="50"></el-input>
               </el-form-item>
-              <el-form-item label="菜单次序" prop="rank">
-                <el-input v-model.number="selectedMenu.rank" placeholder="请输入次序" type="number"></el-input>
+              <el-form-item label="菜单次序" prop="ranktemp">
+                <el-input v-model.number="selectedMenu.ranktemp" placeholder="请输入次序" type="number"></el-input>
               </el-form-item>
               <el-form-item label="是否可见">
                 <el-radio label="1" v-model="selectedMenu.showMenu">可见</el-radio>
@@ -88,7 +88,7 @@ export default {
         hasChild: '',
         showMenu: '',
         icon: '',
-        rank: '',
+        ranktemp: '',
         comment: '',
         parent: '',
         subs: []
@@ -110,7 +110,7 @@ export default {
         icon: [
           { max: 50, message: '菜单图标不能超过50个字', trigger: 'blur' }
         ],
-        rank: [
+        ranktemp: [
           { required: true, type: 'integer', message: '菜单次序不能为空', trigger: 'blur' }
         ]
       }
@@ -234,7 +234,7 @@ export default {
         hasChild: '0',
         showMenu: '1',
         icon: '',
-        rank: '',
+        ranktemp: '',
         comment: '',
         parent: parent,
         subs: []

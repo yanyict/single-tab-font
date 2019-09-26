@@ -92,8 +92,8 @@
           <el-form-item label="菜单图标：" prop="icon">
             <el-input v-model="selectedMenu.icon" placeholder="请输入图标" :maxlength="50"></el-input>
           </el-form-item>
-          <el-form-item label="菜单次序：" prop="rank">
-            <el-input v-model="selectedMenu.rank" placeholder="请输入次序"></el-input>
+          <el-form-item label="菜单次序：" prop="ranktemp">
+            <el-input v-model="selectedMenu.ranktemp" placeholder="请输入次序"></el-input>
           </el-form-item>
           <el-form-item label="是否可见：">
             <el-radio :label="1" v-model.number="selectedMenu.showMenu">可见</el-radio>
@@ -204,7 +204,7 @@ export default {
         hasChild: '',
         showMenu: '',
         icon: '',
-        rank: '',
+        ranktemp: '',
         comment: '',
         parent: '',
         subs: []
@@ -226,7 +226,7 @@ export default {
         icon: [
           { max: 50, message: '菜单图标不能超过50个字', trigger: 'blur' }
         ],
-        rank: [
+        ranktemp: [
           { required: true, validator: SerialValidate, trigger: 'blur' }
         ]
       },
@@ -387,7 +387,7 @@ export default {
       }).catch(() => { })
     },
     append (data) { // 增加子节点
-      let item = { parentId: 0, name: '', url: '', tag: '', comment: '', icon: '', rank: null, hasChild: 0, showMenu: 1 }
+      let item = { parentId: 0, name: '', url: '', tag: '', comment: '', icon: '', ranktemp: null, hasChild: 0, showMenu: 1 }
       item.parentId = data.id === -1 ? 0 : data.id
       this.selectedMenu = item
       this.tempMenuObj = JSON.parse(JSON.stringify(item))
@@ -415,7 +415,7 @@ export default {
           url: this.selectedMenu.url,
           comment: this.selectedMenu.comment,
           icon: this.selectedMenu.icon,
-          rank: this.selectedMenu.rank,
+          ranktemp: this.selectedMenu.ranktemp,
           hasChild: this.selectedMenu.hasChild,
           showMenu: this.selectedMenu.showMenu
         }
@@ -443,7 +443,7 @@ export default {
         url: this.selectedMenu.url,
         comment: this.selectedMenu.comment,
         icon: this.selectedMenu.icon,
-        rank: this.selectedMenu.rank,
+        ranktemp: this.selectedMenu.ranktemp,
         hasChild: this.selectedMenu.hasChild,
         showMenu: this.selectedMenu.showMenu
       }

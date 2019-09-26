@@ -257,3 +257,14 @@ export const reqDataPermissionChangeStatus = params => { // 修改状态
 export const reqDataPermissionUser = params => { // 获取共享来源/目标的用户列表
   return axios.get(`${BASE_URL}/dataPermission/share/listUser.jhtml`, params).then(res => res.data)
 }
+
+/* 文档管理模块接口 */
+export const documentList = params => { // 获取角色列表
+  return axios.post(`${BASE_URL}/document/list.jhtml`, params).then(res => res.data)
+}
+export const documentSave = params => { // 获取角色列表
+  return axios.post(`${BASE_URL}/document/save.jhtml`, params).then(res => res.data)
+}
+export const documentSave = params => { // 获取角色列表
+  return axios.post(`${BASE_URL}/document/outStore.jhtml`, params).then(res => res.data)
+}
