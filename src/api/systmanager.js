@@ -265,6 +265,12 @@ export const documentList = params => { // 获取角色列表
 export const documentSave = params => { // 获取角色列表
   return axios.post(`${BASE_URL}/document/save.jhtml`, params).then(res => res.data)
 }
-export const documentSave = params => { // 获取角色列表
+export const documentOutStore = params => { // 获取角色列表
   return axios.post(`${BASE_URL}/document/outStore.jhtml`, params).then(res => res.data)
+}
+export const documentLend = params => { // 获取角色列表
+  return axios.post(`${BASE_URL}/document/documentLend.jhtml`, params).then(res => res.data)
+}
+export const documentReturn = params => { // 获取角色列表
+  return axios.post(`${BASE_URL}/document/documentReturn.jhtml`, params).then(res => res.data)
 }

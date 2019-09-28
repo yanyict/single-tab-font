@@ -470,7 +470,8 @@ export default {
       this.selectUser.roleIds = [data]
     },
     isShowFunc (func) { // 查看是否有功能权限
-      return isHasPermission(func)
+//      return isHasPermission(func)
+      return true
     },
     handleResetPassword (index, row) {
       this.passwords.id = row.id

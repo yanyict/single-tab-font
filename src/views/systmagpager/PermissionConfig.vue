@@ -99,7 +99,8 @@ export default {
   },
   methods: {
     _hasPermission (tag) {
-      return hasPermission(this.funRoleData, tag)
+//      return hasPermission(this.funRoleData, tag)
+      return true
     },
     _getfunRoleData () { // 获取用户功能权限
       reqGetFunPeofession(this.$route.path).then(res => {

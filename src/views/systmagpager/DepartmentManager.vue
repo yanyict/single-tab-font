@@ -365,7 +365,8 @@ export default {
       this.movedialogTableVisible = true
     },
     isShowFunc (func) { // 查看是否有功能权限
-      return isHasPermission(func)
+//      return isHasPermission(func)
+      return true
     }
   }
 }
