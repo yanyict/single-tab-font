@@ -3,21 +3,56 @@
     <div class="header">
       <div>
         条形码：
-        <el-input style="width: 200px;" size="small" v-model.trim="barCode" placeholder="请输入内容">
+        <el-input @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small"
+                  v-model.trim="barCode"
+                  placeholder="请输入内容">
         </el-input>
       </div>
       <div>
         文件名：
-        <el-input style="width: 200px;" size="small" v-model.trim="name" placeholder="请输入内容">
+        <el-input style="width: 100px;" size="small" v-model.trim="name" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
-        位置：
-        <el-input style="width: 200px;" size="small" v-model.trim="position" placeholder="请输入内容">
+        借阅人：
+        <el-input style="width: 100px;" size="small" v-model.trim="renderTemp" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
-        <el-select v-model="selectState" @change="selectStateChange" placeholder="请选择">
+        起始借出时间：
+        <el-date-picker style="width: 150px;"
+                        v-model="previousLendTime"
+                        type="date"
+                        placeholder="日期">
+        </el-date-picker>
+      </div>
+      <div>
+        截止借出时间：
+        <el-date-picker style="width: 150px;"
+                        v-model="latterLendTime"
+                        type="date"
+                        placeholder="日期">
+        </el-date-picker>
+      </div>
+      <div>
+        起始归还时间：
+        <el-date-picker style="width: 150px;"
+                        v-model="previousReturnTime"
+                        type="date"
+                        placeholder="日期">
+        </el-date-picker>
+      </div>
+      <div>
+        截止归还时间：
+        <el-date-picker style="width: 150px;"
+                        v-model="latterReturnTime"
+                        type="date"
+                        placeholder="日期">
+        </el-date-picker>
+      </div>
+      <div>
+        状态：
+        <el-select v-model="selectState" @change="selectStateChange" placeholder="请选择" style="width: 100px;">
           <el-option v-for="item in stateOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
         </el-select>
       </div>
@@ -27,7 +62,7 @@
     <el-table
       :data="tableData"
     >
-      <el-table-column label="ID">
+      <el-table-column width="80%" label="ID">
         <template slot-scope="scope">
           <span>{{scope.row.id}}</span>
         </template>
@@ -47,7 +82,7 @@
           <span>{{ scope.row.position}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="借阅状态">
+      <el-table-column width="80%" label="借阅状态">
         <template slot-scope="scope">
           <span>{{scope.row.state | stateName}}</span>
         </template>
@@ -61,11 +96,14 @@
         <template slot-scope="scope">
           <span v-if="scope.row.state == 2">{{scope.row.returnTime | formatDate}}</span>
           <div v-if="scope.row.state == 1">
-            <el-input style="width: 100px;" size="small"
-                      v-model.number="scope.row.deadline"
-                      type="number"
-                      oninput="if(value.length>3)value=value.slice(0,3)"
-                      placeholder="请输入期限"></el-input>
+            <el-input-number style="width: 110px;"
+                             size="small"
+                             type="number"
+                             @change="deadlineChange($event, scope.row)"
+                             v-model.number="scope.row.deadline"
+                             :min="1" :max="999"
+                             oninput="if(value.length>3)value=value.slice(0,3)"
+                             placeholder="期限"></el-input-number>
             &nbsp天
           </div>
         </template>
@@ -82,11 +120,15 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.state == 1" @click="lendDocument(scope.row.id, scope.row.deadline, scope.row.render)">借出</el-button>
+          <el-button v-if="scope.row.state == 1"
+                     @click="lendDocument(scope.row.id, scope.row.deadline, scope.row.render, scope.row.barCode, scope.row.name)">
+            借出
+          </el-button>
           <el-button v-if="scope.row.state == 2" @click="returnDocument(scope.row.id)">归还
           </el-button>
         </template>
-      </el-table-column></el-table>
+      </el-table-column>
+    </el-table>
     <div class="page-box">
       <el-pagination
         @size-change="handleSizeChange"
@@ -116,7 +158,11 @@
       return {
         tableData: [],
         itemData: {},
-        searchContent: '',
+        barCode: '',
+        previousLendTime: '',
+        latterLendTime: '',
+        previousReturnTime: '',
+        latterReturnTime: '',
         stateOptions: [{
           value: '2',
           label: '已借出'
@@ -159,24 +205,23 @@
           'user'
         ])
     },
-    watch: {
-//      searchContent () {
-//        let timer
-//        if (timer) { // 优化搜索请求
-//          clearTimeout(timer)
-//        }
-//        timer = setTimeout(() => {
-//          this.handleIconSearchClick()
-//        }, 500)
-//      }
-    },
+    watch: {},
     methods: {
 //      configManager (row) {
 //        this.$router.push({ path: '/sys/rolemanager/rolepermission', query: { id: row.id, name: row.name } })
 //      },
       _loadData(name = '文档') { // 加载列表
         this.loading = true;
+        this.params.name = this.name;
+        this.params.position = this.position;
+        this.params.state = this.searchState;
+        this.params.render = this.renderTemp;
+        this.params.previousLendTime = this.previousLendTime;
+        this.params.latterLendTime = this.latterLendTime;
+        this.params.previousReturnTime = this.previousReturnTime;
+        this.params.latterReturnTime = this.latterReturnTime;
         documentList(this.params).then(res => {
+          this.barCode = "";
           this.loading = false;
           if (res.resultCode === ERR_OK && res.data.data) {
             let tableData = res.data.data;
@@ -195,13 +240,41 @@
       selectStateChange(value) {
         this.searchState = value;
       },
-      lendDocument(id, deadline, render) {
-        this.params.id = id;
-        if (null == deadline || "" == deadline || null == render || "" == render) {
-            return;
+      deadlineChange(obj1, obj2) {
+//        if (obj2.deadline > 10) {
+//            obj2.deadline = 10;
+//        }
+      },
+      lendDocument(id, deadline, render, barCode, name) {
+        if (null == deadline || "" == deadline) {
+          this.$message({
+            type: 'error',
+            message: '期限不能为空!',
+            duration: 1500
+          });
+          return;
         }
+        if (0 > deadline) {
+          this.$message({
+            type: 'error',
+            message: '期限小于0!',
+            duration: 1500
+          });
+          return;
+        }
+        if (null == deadline || "" == deadline || null == render || "" == render) {
+          this.$message({
+            type: 'error',
+            message: '借阅人不能为空!',
+            duration: 1500
+          });
+          return;
+        }
+        this.params.id = id;
         this.params.deadline = deadline;
         this.params.render = render;
+        this.params.barCode = barCode;
+        this.params.name = name;
         documentLend(this.params).then(res => {
           if (res.resultCode === ERR_OK) {
             this._loadData();
@@ -276,23 +349,22 @@
         }
       },
       handleIconSearchClick() {
-        this.params.name = this.name;
-        this.params.barCode = this.barCode;
-        this.params.position = this.position;
-        this.params.state = this.searchState;
         this.params.pageIndex = 1;
+        this.params.barCode = this.barCode;
         this._loadData()
       },
       cleanSearch() {
         this.params.pageIndex = 1;
-        this.params.name = "";
         this.params.barCode = "";
-        this.params.position = "";
-        this.params.state = -2;
         this.name = "";
         this.barCode = "";
         this.position = "";
-        this.searchState=-2;
+        this.renderTemp = "";
+        this.previousLendTime = "";
+        this.latterLendTime = "";
+        this.previousReturnTime = "";
+        this.latterReturnTime = "";
+        this.searchState = -2;
         this._loadData()
       },
       handleSizeChange(val) { // 改变显示条数

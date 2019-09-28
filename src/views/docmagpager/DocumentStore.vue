@@ -16,27 +16,61 @@
         <el-input style="width: 250px;" size="small" v-model.trim="position4Add" placeholder="请输入内容">
         </el-input>
       </div>
-      <el-button size="small" @click="save" icon="el-icon-plus" type="primary">入库</el-button>
+      <el-button size="small" @click="saveDocument" icon="el-icon-plus" type="primary">入库</el-button>
       <el-button size="small" @click="cleanSave" icon="el-icon-plus" type="primary">清空</el-button>
     </div>
     <div class="header">
       <div>
         条形码：
-        <el-input style="width: 200px;" size="small" v-model.trim="barCode" placeholder="请输入内容">
+        <el-input @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small" v-model.trim="barCode"
+                  placeholder="请输入内容">
         </el-input>
       </div>
       <div>
         文件名：
-        <el-input style="width: 200px;" size="small" v-model.trim="name" placeholder="请输入内容">
+        <el-input style="width: 100px;" size="small" v-model.trim="name" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
         位置：
-        <el-input style="width: 200px;" size="small" v-model.trim="position" placeholder="请输入内容">
+        <el-input style="width: 100px;" size="small" v-model.trim="position" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
-        <el-select v-model="selectState" @change="selectStateChange" placeholder="请选择">
+        起始入库时间：
+        <el-date-picker style="width: 150px;"
+                        v-model="previousInTime"
+                        type="date"
+                        placeholder="日期">
+        </el-date-picker>
+      </div>
+      <div>
+        截止入库时间：
+        <el-date-picker style="width: 150px;"
+                        v-model="latterInTime"
+                        type="date"
+                        placeholder="日期">
+        </el-date-picker>
+      </div>
+      <div>
+        起始出库时间：
+        <el-date-picker style="width: 150px;"
+                        v-model="previousOutTime"
+                        type="date"
+                        placeholder="日期">
+        </el-date-picker>
+      </div>
+      <div>
+        截止出库时间：
+        <el-date-picker style="width: 150px;"
+                        v-model="latterOutTime"
+                        type="date"
+                        placeholder="日期">
+        </el-date-picker>
+      </div>
+      <div>
+        状态：
+        <el-select v-model="selectState" @change="selectStateChange" placeholder="请选择" style="width: 100px;">
           <el-option v-for="item in stateOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
         </el-select>
       </div>
@@ -116,7 +150,11 @@
       return {
         tableData: [],
         itemData: {},
-        searchContent: '',
+        barCode: '',
+        previousInTime: '',
+        latterInTime: '',
+        previousOutTime: '',
+        latterOutTime: '',
         stateOptions: [{
           value: '0',
           label: '出库'
@@ -157,24 +195,23 @@
         'user'
       ])
     },
-    watch: {
-//      searchContent () {
-//        let timer
-//        if (timer) { // 优化搜索请求
-//          clearTimeout(timer)
-//        }
-//        timer = setTimeout(() => {
-//          this.handleIconSearchClick()
-//        }, 500)
-//      }
-    },
+    watch: {},
     methods: {
 //      configManager (row) {
 //        this.$router.push({ path: '/sys/rolemanager/rolepermission', query: { id: row.id, name: row.name } })
 //      },
       _loadData (name = '文档') { // 加载列表
         this.loading = true;
+        this.params.name = this.name;
+        this.params.barCode = this.barCode;
+        this.params.position = this.position;
+        this.params.state = this.searchState;
+        this.params.previousInTime = this.previousInTime;
+        this.params.latterInTime = this.latterInTime;
+        this.params.previousOutTime = this.previousOutTime;
+        this.params.latterOutTime = this.latterOutTime;
         documentList(this.params).then(res => {
+          this.barCode = "";
           this.loading = false;
           if (res.resultCode === ERR_OK && res.data.data) {
             let tableData = res.data.data;
@@ -201,13 +238,37 @@
           }
         })
       },
-      save () { // 新增
+      saveDocument () { // 新增
+        if (null == this.name4Add || "" == this.name4Add) {
+          this.$message({
+            type: 'error',
+            message: '文件名不能为空!',
+            duration: 1500
+          });
+          return;
+        }
+        if (null == this.barCode4Add || "" == this.barCode4Add) {
+          this.$message({
+            type: 'error',
+            message: '条形码不能为空!',
+            duration: 1500
+          });
+          return;
+        }
+        if (null == this.position4Add || "" == this.position4Add) {
+          this.$message({
+            type: 'error',
+            message: '位置不能为空!',
+            duration: 1500
+          });
+          return;
+        }
         this.params.name4Add = this.name4Add;
         this.params.barCode4Add = this.barCode4Add;
         this.params.position4Add = this.position4Add;
         documentSave(this.params).then(res => {
           if (res.resultCode === ERR_OK) {
-            this._loadData();
+            this.cleanSave();
           }
         })
       },
@@ -271,18 +332,10 @@
         }
       },
       handleIconSearchClick () {
-        this.params.name = this.name;
-        this.params.barCode = this.barCode;
-        this.params.position = this.position;
-        this.params.state = this.searchState;
-        console.log(this.params);
         this.params.pageIndex = 1;
         this._loadData()
       },
       cleanSave () {
-        this.params.name4Add = "";
-        this.params.barCode4Add = "";
-        this.params.position4Add = "";
         this.name4Add = "";
         this.barCode4Add = "";
         this.position4Add = "";
@@ -290,13 +343,13 @@
       },
       cleanSearch () {
         this.params.pageIndex = 1;
-        this.params.name = "";
-        this.params.barCode = "";
-        this.params.position = "";
-        this.params.state = -2;
         this.name = "";
         this.barCode = "";
         this.position = "";
+        this.previousInTime = "";
+        this.latterInTime = "";
+        this.previousOutTime = "";
+        this.latterOutTime = "";
         this.searchState = -2;
         this._loadData()
       },

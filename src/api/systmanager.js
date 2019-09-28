@@ -274,3 +274,6 @@ export const documentLend = params => { // 获取角色列表
 export const documentReturn = params => { // 获取角色列表
   return axios.post(`${BASE_URL}/document/documentReturn.jhtml`, params).then(res => res.data)
 }
+export const lendRecordList = params => { // 获取角色列表
+  return axios.post(`${BASE_URL}/lendReocrd/list.jhtml`, params).then(res => res.data)
+}
