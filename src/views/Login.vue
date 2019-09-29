@@ -57,7 +57,8 @@ export default {
         if (res.resultCode === ERR_OK) {
           this.menus = res.data
           if (this.menus.length) {
-            this.jumpToUrl = !this.menus[0].url ? this.menus[0].sonMenuVOs[0].url : this.menus[0].url
+//            this.jumpToUrl = !this.menus[0].url ? this.menus[0].sonMenuVOs[0].url : this.menus[0].url
+            this.jumpToUrl = "/document/documentlend";
             let id = !this.menus[0].url ? this.menus[0].sonMenuVOs[0].id : this.menus[0].id
             this._loadMenuFunc(id)
           } else {

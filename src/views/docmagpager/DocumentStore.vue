@@ -16,8 +16,8 @@
         <el-input style="width: 250px;" size="small" v-model.trim="position4Add" placeholder="请输入内容">
         </el-input>
       </div>
-      <el-button size="small" @click="saveDocument" icon="el-icon-plus" type="primary">入库</el-button>
-      <el-button size="small" @click="cleanSave" icon="el-icon-plus" type="primary">清空</el-button>
+      <el-button style="float:right" size="small" @click="saveDocument" icon="el-icon-plus" type="primary">入库</el-button>
+      <el-button style="float:right" size="small" @click="cleanSave" icon="el-icon-plus" type="primary">清空</el-button>
     </div>
     <div class="header">
       <div>

@@ -56,8 +56,8 @@
           <el-option v-for="item in stateOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
         </el-select>
       </div>
-      <el-button size="small" @click="handleIconSearchClick" icon="el-icon-plus" type="primary">搜索</el-button>
-      <el-button size="small" @click="cleanSearch" icon="el-icon-plus" type="primary">清空</el-button>
+      <el-button style="float:right" size="small" @click="handleIconSearchClick" icon="el-icon-plus" type="primary">搜索</el-button>
+      <el-button style="float:right" size="small" @click="cleanSearch" icon="el-icon-plus" type="primary">清空</el-button>
     </div>
     <el-table
       :data="tableData"
@@ -124,7 +124,9 @@
                      @click="lendDocument(scope.row.id, scope.row.deadline, scope.row.render, scope.row.barCode, scope.row.name)">
             借出
           </el-button>
-          <el-button v-if="scope.row.state == 2" @click="returnDocument(scope.row.id)">归还
+          <el-button v-if="scope.row.state == 2"
+                     @click="returnDocument(scope.row.id, scope.row.render, scope.row.barCode, scope.row.name)">
+            归还
           </el-button>
         </template>
       </el-table-column>
@@ -281,8 +283,11 @@
           }
         })
       },
-      returnDocument(id) {
+      returnDocument(id, render, barCode, name) {
         this.params.id = id;
+        this.params.render = render;
+        this.params.barCode = barCode;
+        this.params.name = name;
         documentReturn(this.params).then(res => {
           if (res.resultCode === ERR_OK) {
             this._loadData();
