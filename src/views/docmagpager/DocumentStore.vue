@@ -3,17 +3,17 @@
     <div class="header">
       <div>
         条形码：
-        <el-input style="width: 250px;" size="small" v-model.trim="barCode4Add" placeholder="请输入内容">
+        <el-input maxlength="20" style="width: 250px;" size="small" v-model.trim="barCode4Add" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
         文件名：
-        <el-input style="width: 250px;" size="small" v-model.trim="name4Add" placeholder="请输入内容">
+        <el-input maxlength="20" style="width: 250px;" size="small" v-model.trim="name4Add" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
         位置：
-        <el-input style="width: 250px;" size="small" v-model.trim="position4Add" placeholder="请输入内容">
+        <el-input maxlength="50" style="width: 850px;" size="small" v-model.trim="position4Add" placeholder="请输入内容">
         </el-input>
       </div>
       <el-button style="float:right" size="small" @click="saveDocument" icon="el-icon-plus" type="primary">入库</el-button>
@@ -22,18 +22,18 @@
     <div class="header">
       <div>
         条形码：
-        <el-input @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small" v-model.trim="barCode"
+        <el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small" v-model.trim="barCode"
                   placeholder="请输入内容">
         </el-input>
       </div>
       <div>
         文件名：
-        <el-input style="width: 100px;" size="small" v-model.trim="name" placeholder="请输入内容">
+        <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="name" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
         位置：
-        <el-input style="width: 100px;" size="small" v-model.trim="position" placeholder="请输入内容">
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="position" placeholder="请输入内容">
         </el-input>
       </div>
       <div>

@@ -3,19 +3,19 @@
     <div class="header">
       <div>
         条形码：
-        <el-input @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small"
+        <el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small"
                   v-model.trim="barCode"
                   placeholder="请输入内容">
         </el-input>
       </div>
       <div>
         文件名：
-        <el-input style="width: 100px;" size="small" v-model.trim="name" placeholder="请输入内容">
+        <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="name" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
         借阅人：
-        <el-input style="width: 100px;" size="small" v-model.trim="renderTemp" placeholder="请输入内容">
+        <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="renderTemp" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
@@ -110,7 +110,7 @@
       </el-table-column>
       <el-table-column label="借阅人">
         <template slot-scope="scope">
-          <el-input style="width: 100px;"
+          <el-input style="width: 100px;" maxlength="20"
                     size="small"
                     v-model.number="scope.row.render"
                     v-bind:disabled="scope.row.state == 2"
