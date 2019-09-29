@@ -135,7 +135,7 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentIndex"
+        :current-page.sync="currentIndex"
         :page-sizes="[10, 20, 30, 40]"
         :page-size="params.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
@@ -355,11 +355,13 @@
       },
       handleIconSearchClick() {
         this.params.pageIndex = 1;
+        this.currentIndex = 1;
         this.params.barCode = this.barCode;
         this._loadData()
       },
       cleanSearch() {
         this.params.pageIndex = 1;
+        this.currentIndex = 1;
         this.params.barCode = "";
         this.name = "";
         this.barCode = "";
@@ -374,11 +376,13 @@
       },
       handleSizeChange(val) { // 改变显示条数
         this.params.pageIndex = 1;
+        this.currentIndex = 1;
         this.params.pageSize = val;
         this._loadData()
       },
       handleCurrentChange(val) { // 切换页面
         this.params.pageIndex = val;
+        this.currentIndex = val;
         this._loadData()
       },
 //      isShowFunc (func) { // 查看是否有功能权限
