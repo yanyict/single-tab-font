@@ -13,9 +13,10 @@
       </div>
       <div>
         位置：
-        <el-input maxlength="50" style="width: 850px;" size="small" v-model.trim="position4Add" placeholder="请输入内容">
+        <el-input maxlength="50" style="width: 700px;" size="small" v-model.trim="position4Add" placeholder="请输入内容">
         </el-input>
       </div>
+      <el-button style="float:right" size="small" @click="createBarCode" icon="el-icon-plus" type="primary">生成条形码</el-button>
       <el-button style="float:right" size="small" @click="saveDocument" icon="el-icon-plus" type="primary">入库</el-button>
       <el-button style="float:right" size="small" @click="cleanSave" icon="el-icon-plus" type="primary">清空</el-button>
     </div>
@@ -137,7 +138,7 @@
 <script>
   import {formatDate, isHasPermission} from 'common/js/utils'
   import {ERR_OK} from 'api/config'
-  import {documentList, documentSave, documentOutStore} from 'api/systmanager'
+  import {documentList, documentSave, documentOutStore, getBarCode} from 'api/systmanager'
   import Btn from 'components/Btn'
   import {mapGetters} from 'vuex'
 
@@ -151,6 +152,7 @@
         tableData: [],
         itemData: {},
         barCode: '',
+        barCode4Add: '',
         previousInTime: '',
         latterInTime: '',
         previousOutTime: '',
@@ -235,6 +237,13 @@
         documentOutStore(this.params).then(res => {
           if (res.resultCode === ERR_OK) {
             this._loadData();
+          }
+        })
+      },
+      createBarCode() {
+        getBarCode(this.params).then(res => {
+          if (res.resultCode === ERR_OK) {
+            this.barCode4Add = res.data.resultMessage;
           }
         })
       },
