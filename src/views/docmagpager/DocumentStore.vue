@@ -16,14 +16,17 @@
         <el-input maxlength="50" style="width: 700px;" size="small" v-model.trim="position4Add" placeholder="请输入内容">
         </el-input>
       </div>
-      <el-button style="float:right" size="small" @click="createBarCode" icon="el-icon-plus" type="primary">生成条形码</el-button>
-      <el-button style="float:right" size="small" @click="saveDocument" icon="el-icon-plus" type="primary">入库</el-button>
+      <el-button style="float:right" size="small" @click="createBarCode" icon="el-icon-plus" type="primary">生成条形码
+      </el-button>
+      <el-button style="float:right" size="small" @click="saveDocument" icon="el-icon-plus" type="primary">入库
+      </el-button>
       <el-button style="float:right" size="small" @click="cleanSave" icon="el-icon-plus" type="primary">清空</el-button>
     </div>
     <div class="header">
       <div>
         条形码：
-        <el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small" v-model.trim="barCode"
+        <el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small"
+                  v-model.trim="barCode"
                   placeholder="请输入内容">
         </el-input>
       </div>
@@ -276,13 +279,21 @@
         this.params.barCode4Add = this.barCode4Add;
         this.params.position4Add = this.position4Add;
         documentSave(this.params).then(res => {
-          if (res.resultCode === ERR_OK) {
+          if (res.data.resultCode === ERR_OK) {
+            this.$message({
+              type: 'success',
+              message: res.data.resultMessage,
+              duration: 1500
+            });
+            this.cleanSave();
+          }
+          if (res.data.resultCode === 400) {
             this.$message({
               type: 'error',
               message: res.data.resultMessage,
               duration: 1500
             });
-            this.cleanSave();
+            this.barCode4Add = "";
           }
         })
       },
