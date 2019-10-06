@@ -277,6 +277,11 @@
         this.params.position4Add = this.position4Add;
         documentSave(this.params).then(res => {
           if (res.resultCode === ERR_OK) {
+            this.$message({
+              type: 'error',
+              message: res.data.resultMessage,
+              duration: 1500
+            });
             this.cleanSave();
           }
         })
