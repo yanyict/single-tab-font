@@ -1,95 +1,70 @@
 <template>
   <div class="base-box role-manager-box">
     <div class="header">
-      <div>
-        条形码：
-        <el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 200px;" size="small"
-                  v-model.trim="barCode"
-                  placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        全宗号：
-        <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="archiveNumber" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        文件名：
-        <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="name" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        借阅人：
-        <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="renderTemp" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        年份：
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="previousYear" placeholder="请输入内容">
-        </el-input>
-        到
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="latterYear" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        第
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="previousVolumeNumber"
-                  placeholder="请输入内容">
-        </el-input>
-        到
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="latterVolumeNumber"
-                  placeholder="请输入内容">
-        </el-input>
-        卷(盒)
-      </div>
+      <!--<div>-->
+        <!--条形码：-->
+        <!--<el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small"-->
+                  <!--v-model.trim="barCode"-->
+                  <!--placeholder="请输入内容">-->
+        <!--</el-input>-->
+      <!--</div>-->
+      <!--<div>-->
+        <!--文件名：-->
+        <!--<el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="name" placeholder="请输入内容">-->
+        <!--</el-input>-->
+      <!--</div>-->
+      <!--<div>-->
+        <!--借阅人：-->
+        <!--<el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="renderTemp" placeholder="请输入内容">-->
+        <!--</el-input>-->
+      <!--</div>-->
+      <!--<div>-->
+        <!--起始借出时间：-->
+        <!--<el-date-picker style="width: 150px;"-->
+                        <!--v-model="previousLendTime"-->
+                        <!--type="date"-->
+                        <!--placeholder="日期">-->
+        <!--</el-date-picker>-->
+      <!--</div>-->
+      <!--<div>-->
+        <!--截止借出时间：-->
+        <!--<el-date-picker style="width: 150px;"-->
+                        <!--v-model="latterLendTime"-->
+                        <!--type="date"-->
+                        <!--placeholder="日期">-->
+        <!--</el-date-picker>-->
+      <!--</div>-->
+      <!--<div>-->
+        <!--起始归还时间：-->
+        <!--<el-date-picker style="width: 150px;"-->
+                        <!--v-model="previousReturnTime"-->
+                        <!--type="date"-->
+                        <!--placeholder="日期">-->
+        <!--</el-date-picker>-->
+      <!--</div>-->
+      <!--<div>-->
+        <!--截止归还时间：-->
+        <!--<el-date-picker style="width: 150px;"-->
+                        <!--v-model="latterReturnTime"-->
+                        <!--type="date"-->
+                        <!--placeholder="日期">-->
+        <!--</el-date-picker>-->
+      <!--</div>-->
+      <!--<div>-->
+        <!--状态：-->
+        <!--<el-select v-model="selectState" @change="selectStateChange" placeholder="请选择" style="width: 100px;">-->
+          <!--<el-option v-for="item in stateOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>-->
+        <!--</el-select>-->
+      <!--</div>-->
+      <!--<el-button style="float:right" size="small" @click="handleIconSearchClick" icon="el-icon-plus" type="primary">搜索</el-button>-->
+      <!--<el-button style="float:right" size="small" @click="cleanSearch" icon="el-icon-plus" type="primary">清空</el-button>-->
     </div>
-    <div class="header">
-      <div>
-        起始借出时间：
-        <el-date-picker style="width: 150px;"
-                        v-model="previousLendTime"
-                        type="date"
-                        placeholder="日期">
-        </el-date-picker>
-      </div>
-      <div>
-        截止借出时间：
-        <el-date-picker style="width: 150px;"
-                        v-model="latterLendTime"
-                        type="date"
-                        placeholder="日期">
-        </el-date-picker>
-      </div>
-      <div>
-        起始归还时间：
-        <el-date-picker style="width: 150px;"
-                        v-model="previousReturnTime"
-                        type="date"
-                        placeholder="日期">
-        </el-date-picker>
-      </div>
-      <div>
-        截止归还时间：
-        <el-date-picker style="width: 150px;"
-                        v-model="latterReturnTime"
-                        type="date"
-                        placeholder="日期">
-        </el-date-picker>
-      </div>
-      <div>
-        状态：
-        <el-select v-model="selectState" @change="selectStateChange" placeholder="请选择" style="width: 100px;">
-          <el-option v-for="item in stateOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
-        </el-select>
-      </div>
-      <el-button style="float:right" size="small" @click="handleIconSearchClick" icon="el-icon-plus" type="primary">搜索
-      </el-button>
-      <el-button style="float:right" size="small" @click="cleanSearch" icon="el-icon-plus" type="primary">清空</el-button>
-    </div>
-    <el-table :data="tableData">
-      <el-table-column width="80%" label="全宗号">
+    <el-table
+      :data="tableData"
+    >
+      <el-table-column width="80%" label="ID">
         <template slot-scope="scope">
-          <span>{{scope.row.archiveNumber}}</span>
+          <span>{{scope.row.id}}</span>
         </template>
       </el-table-column>
       <el-table-column label="条形码">
@@ -97,17 +72,17 @@
           <span>{{scope.row.barCode}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="80%" label="文件名">
+      <el-table-column label="文件名">
         <template slot-scope="scope">
           <span>{{scope.row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="80%" label="年份">
+      <el-table-column width="80%"  label="年份">
         <template slot-scope="scope">
           <span>{{scope.row.year}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="80%" label="第几卷(盒)">
+      <el-table-column width="100%"  label="第几卷(盒)">
         <template slot-scope="scope">
           <span>{{ scope.row.volumeNumber}}</span>
         </template>
@@ -124,7 +99,7 @@
       </el-table-column>
       <el-table-column label="位置">
         <template slot-scope="scope">
-          <span>{{ scope.row.position}}</span>
+          <span>{{scope.row.position}}</span>
         </template>
       </el-table-column>
       <el-table-column width="80%" label="借阅状态">
@@ -139,40 +114,12 @@
       </el-table-column>
       <el-table-column label="归还期限">
         <template slot-scope="scope">
-          <span v-if="scope.row.state == 2">{{scope.row.returnTime | formatDate}}</span>
-          <div v-if="scope.row.state == 1">
-            <el-input-number style="width: 110px;"
-                             size="small"
-                             type="number"
-                             @change="deadlineChange($event, scope.row)"
-                             v-model.number="scope.row.deadline"
-                             :min="1" :max="999"
-                             oninput="if(value.length>3)value=value.slice(0,3)"
-                             placeholder="期限"></el-input-number>
-            &nbsp天
-          </div>
+          <span>{{scope.row.returnTime | formatDate}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="借阅人">
+      <el-table-column width="80%" label="借阅人">
         <template slot-scope="scope">
-          <el-input style="width: 100px;" maxlength="20"
-                    size="small"
-                    v-model.number="scope.row.render"
-                    v-bind:disabled="scope.row.state == 2"
-                    oninput="if(value.length>19)value=value.slice(0,20)"
-                    placeholder="借阅人姓名"></el-input>
-        </template>
-      </el-table-column>
-      <el-table-column width="80%" label="操作">
-        <template slot-scope="scope">
-          <el-button v-if="scope.row.state == 1"
-                     @click="lendDocument(scope.row.id, scope.row.deadline, scope.row.render, scope.row.barCode, scope.row.name, scope.row.archiveNumber, scope.row.startTime, scope.row.endTime, scope.row.volume, scope.row.share, scope.row.storeLimit, scope.row.year, scope.row.volumeNumber, scope.row.startCertificate, scope.row.endCertificate, scope.row.type)">
-            借出
-          </el-button>
-          <el-button v-if="scope.row.state == 2"
-                     @click="returnDocument(scope.row.id, scope.row.render, scope.row.barCode, scope.row.name)">
-            归还
-          </el-button>
+          <span>{{scope.row.render}}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -192,7 +139,7 @@
 <script>
   import {formatDate, isHasPermission} from 'common/js/utils'
   import {ERR_OK} from 'api/config'
-  import {documentList, documentLend, documentReturn} from 'api/systmanager'
+  import {documentList, documentLend, documentReturn, documentWarnList} from 'api/systmanager'
   import Btn from 'components/Btn'
   import {mapGetters} from 'vuex'
 
@@ -263,20 +210,15 @@
 //      },
       _loadData(name = '文档') { // 加载列表
         this.loading = true;
-        this.params.name = this.name;
-        this.params.position = this.position;
-        this.params.state = this.searchState;
-        this.params.render = this.renderTemp;
-        this.params.previousLendTime = this.previousLendTime;
-        this.params.latterLendTime = this.latterLendTime;
-        this.params.previousReturnTime = this.previousReturnTime;
-        this.params.latterReturnTime = this.latterReturnTime;
-        this.params.previousYear = this.previousYear;
-        this.params.latterYear = this.latterYear;
-        this.params.previousVolumeNumber = this.previousVolumeNumber;
-        this.params.latterVolumeNumber = this.latterVolumeNumber;
-        this.params.archiveNumber = this.archiveNumber;
-        documentList(this.params).then(res => {
+//        this.params.name = this.name;
+//        this.params.position = this.position;
+//        this.params.state = this.searchState;
+//        this.params.render = this.renderTemp;
+//        this.params.previousLendTime = this.previousLendTime;
+//        this.params.latterLendTime = this.latterLendTime;
+//        this.params.previousReturnTime = this.previousReturnTime;
+//        this.params.latterReturnTime = this.latterReturnTime;
+        documentWarnList(this.params).then(res => {
           this.barCode = "";
           this.loading = false;
           if (res.resultCode === ERR_OK && res.data.data) {
@@ -301,8 +243,7 @@
 //            obj2.deadline = 10;
 //        }
       },
-      lendDocument(id, deadline, render, barCode, name,
-                   archiveNumber,startTime,endTime,volume,share,storeLimit,year,volumeNumber,startCertificate,endCertificate,type) {
+      lendDocument(id, deadline, render, barCode, name) {
         if (null == deadline || "" == deadline) {
           this.$message({
             type: 'error',
@@ -332,17 +273,6 @@
         this.params.render = render;
         this.params.barCode = barCode;
         this.params.name = name;
-        this.params.archiveNumber = archiveNumber;
-        this.params.startTime = startTime;
-        this.params.endTime = endTime;
-        this.params.volume = volume;
-        this.params.share = share;
-        this.params.storeLimit = storeLimit;
-        this.params.year = year;
-        this.params.volumeNumber = volumeNumber;
-        this.params.startCertificate = startCertificate;
-        this.params.endCertificate = endCertificate;
-        this.params.type = type;
         documentLend(this.params).then(res => {
           if (res.resultCode === ERR_OK) {
             this._loadData();
@@ -437,11 +367,6 @@
         this.latterLendTime = "";
         this.previousReturnTime = "";
         this.latterReturnTime = "";
-        this.previousYear = "";
-        this.latterYear = "";
-        this.previousVolumeNumber = "";
-        this.latterVolumeNumber = "";
-        this.archiveNumber = "";
         this.searchState = -2;
         this.selectState = "全部";
         this._loadData()

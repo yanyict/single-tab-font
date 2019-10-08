@@ -2,18 +2,83 @@
   <div class="base-box role-manager-box">
     <div class="header">
       <div>
+        文档类型：
+        <el-select v-model="selectType4Add" @change="selectType4AddChange" placeholder="请选择" style="width: 150px;">
+          <el-option v-for="item in type4AddOptions" :key="item.type" :value="item.type" :label="item.name"></el-option>
+        </el-select>
+      </div>
+      <div>
         条形码：
-        <el-input maxlength="20" style="width: 250px;" size="small" v-model.trim="barCode4Add" placeholder="请输入内容">
+        <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="barCode4Add" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
         文件名：
-        <el-input maxlength="20" style="width: 250px;" size="small" v-model.trim="name4Add" placeholder="请输入内容">
+        <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="name4Add" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
+        全宗号：
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="archiveNumber4Add" placeholder="请输入内容">
+        </el-input>
+      </div>
+      <div>
+        自
+        <el-date-picker style="width: 150px;"
+                        v-model="startTime4Add"
+                        type="date"
+                        placeholder="日期">
+        </el-date-picker>
+        起至
+        <el-date-picker style="width: 150px;"
+                        v-model="endTime4Add"
+                        type="date"
+                        placeholder="日期">
+        </el-date-picker>
+      </div>
+      <div>
+        本盒共
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="volume4Add" placeholder="请输入内容">
+        </el-input>
+        <span v-if="type4Add==1">卷</span>
+        <span v-if="type4Add==2">册</span>
+      </div>
+      <div>
+        共
+        <el-input :disabled="type4Add===1?false:true" maxlength="50" style="width: 100px;" size="small" v-model.trim="share4Add" placeholder="请输入内容">
+        </el-input>
+        份
+      </div>
+    </div>
+    <div class="header">
+      <div>
         位置：
-        <el-input maxlength="50" style="width: 700px;" size="small" v-model.trim="position4Add" placeholder="请输入内容">
+        <el-input maxlength="50" style="width: 300px;" size="small" v-model.trim="position4Add" placeholder="请输入内容">
+        </el-input>
+      </div>
+      <div>
+        保管期限：
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="storeLimit4Add" placeholder="请输入内容">
+        </el-input>
+      </div>
+      <div>
+        年份：
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="year4Add" placeholder="请输入内容">
+        </el-input>
+      </div>
+      <div>
+        第
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="volumeNumber4Add" placeholder="请输入内容">
+        </el-input>
+        <span v-if="type4Add==1">卷</span>
+        <span v-if="type4Add==2">盒</span>
+      </div>
+      <div>
+        凭证号：
+        <el-input :disabled="type4Add===2?false:true" maxlength="50" style="width: 100px;" size="small" v-model.trim="startCertificate4Add" placeholder="请输入内容">
+        </el-input>
+        至
+        <el-input :disabled="type4Add===2?false:true" maxlength="50" style="width: 100px;" size="small" v-model.trim="endCertificate4Add" placeholder="请输入内容">
         </el-input>
       </div>
       <el-button style="float:right" size="small" @click="createBarCode" icon="el-icon-plus" type="primary">生成条形码
@@ -31,6 +96,11 @@
         </el-input>
       </div>
       <div>
+        全宗号：
+        <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="archiveNumber" placeholder="请输入内容">
+        </el-input>
+      </div>
+      <div>
         文件名：
         <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="name" placeholder="请输入内容">
         </el-input>
@@ -41,6 +111,23 @@
         </el-input>
       </div>
       <div>
+        年份：
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="previousYear" placeholder="请输入内容">
+        </el-input>
+        到
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="latterYear" placeholder="请输入内容">
+        </el-input>
+      </div>
+      <div>
+        第
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="previousVolumeNumber" placeholder="请输入内容">
+        </el-input>
+        到
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="latterVolumeNumber" placeholder="请输入内容">
+        </el-input>
+        卷(盒)
+      </div>
+      <div v-if="false">
         起始入库时间：
         <el-date-picker style="width: 150px;"
                         v-model="previousInTime"
@@ -48,7 +135,7 @@
                         placeholder="日期">
         </el-date-picker>
       </div>
-      <div>
+      <div v-if="false">
         截止入库时间：
         <el-date-picker style="width: 150px;"
                         v-model="latterInTime"
@@ -56,7 +143,7 @@
                         placeholder="日期">
         </el-date-picker>
       </div>
-      <div>
+      <div v-if="false">
         起始出库时间：
         <el-date-picker style="width: 150px;"
                         v-model="previousOutTime"
@@ -64,7 +151,7 @@
                         placeholder="日期">
         </el-date-picker>
       </div>
-      <div>
+      <div v-if="false">
         截止出库时间：
         <el-date-picker style="width: 150px;"
                         v-model="latterOutTime"
@@ -72,7 +159,7 @@
                         placeholder="日期">
         </el-date-picker>
       </div>
-      <div>
+      <div v-if="false">
         状态：
         <el-select v-model="selectState" @change="selectStateChange" placeholder="请选择" style="width: 100px;">
           <el-option v-for="item in stateOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
@@ -81,12 +168,10 @@
       <el-button size="small" @click="handleIconSearchClick" icon="el-icon-plus" type="primary">搜索</el-button>
       <el-button size="small" @click="cleanSearch" icon="el-icon-plus" type="primary">清空</el-button>
     </div>
-    <el-table
-      :data="tableData"
-    >
-      <el-table-column label="ID">
+    <el-table :data="tableData">
+      <el-table-column label="全宗号">
         <template slot-scope="scope">
-          <span>{{ scope.row.id}}</span>
+          <span>{{ scope.row.archiveNumber}}</span>
         </template>
       </el-table-column>
       <el-table-column label="条形码">
@@ -104,26 +189,51 @@
           <span>{{ scope.row.position}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="入库状态">
+      <el-table-column label="年份">
         <template slot-scope="scope">
-          <span>{{ scope.row.state | stateName}}</span>
+          <span>{{ scope.row.year}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="入库时间">
+      <el-table-column label="第几卷(盒)">
         <template slot-scope="scope">
-          <span>{{ scope.row.inTime | formatDate}}</span>
+          <span>{{ scope.row.volumeNumber}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="出库时间">
+      <el-table-column label="保管期限">
         <template slot-scope="scope">
-          <span>{{ scope.row.outTime | formatDate}}</span>
+          <span>{{ scope.row.storeLimit}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="凭证号">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.state != 0" @click="outStore(scope.row.id)">出库</el-button>
+          <span>{{ scope.row.startCertificate}}</span><span v-if="scope.row.startCertificate != null">至</span><span>{{ scope.row.endCertificate}}</span>
         </template>
       </el-table-column>
+      <!--<el-table-column label="入库状态">-->
+        <!--<template slot-scope="scope">-->
+          <!--<span>{{ scope.row.state | stateName}}</span>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <el-table-column label="档案类别">
+        <template slot-scope="scope">
+          <span>{{ scope.row.type | typeName}}</span>
+        </template>
+      </el-table-column>
+      <!--<el-table-column label="入库时间">-->
+        <!--<template slot-scope="scope">-->
+          <!--<span>{{ scope.row.inTime | formatDate}}</span>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column label="出库时间">-->
+        <!--<template slot-scope="scope">-->
+          <!--<span>{{ scope.row.outTime | formatDate}}</span>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column label="操作">-->
+        <!--<template slot-scope="scope">-->
+          <!--<el-button v-if="scope.row.state != 0" @click="outStore(scope.row.id)">出库</el-button>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
     </el-table>
     <div class="page-box">
       <el-pagination
@@ -141,10 +251,9 @@
 <script>
   import {formatDate, isHasPermission} from 'common/js/utils'
   import {ERR_OK} from 'api/config'
-  import {documentList, documentSave, documentOutStore, getBarCode} from 'api/systmanager'
+  import {documentList, documentSave, documentOutStore, getBarCode, documentTypeAll} from 'api/systmanager'
   import Btn from 'components/Btn'
   import {mapGetters} from 'vuex'
-
   export default {
     name: 'DocumentManager',
     components: {
@@ -160,6 +269,8 @@
         latterInTime: '',
         previousOutTime: '',
         latterOutTime: '',
+        startTime4Add: '',
+        endTime4Add: '',
         stateOptions: [{
           value: '0',
           label: '出库'
@@ -171,6 +282,9 @@
           label: '全部'
         }],
         selectState: '-2',
+//        type4AddOptions: [{type: 1, name: "证书"}],
+        type4AddOptions: [],
+        selectType4Add: '',
         params: {
           pageIndex: 1,
           pageSize: 10
@@ -181,7 +295,7 @@
       }
     },
     created () {
-      this._loadData()
+      this.getDocumentType();
     },
     filters: {
       formatDate (time) {
@@ -193,6 +307,10 @@
       stateName (state) {
         if (0 == state) return "出库"
         else return "在库"
+      },
+      typeName (type) {
+        if (1 == type) return "会计档案"
+        else return "会计凭证"
       }
     },
     computed: {
@@ -215,6 +333,11 @@
         this.params.latterInTime = this.latterInTime;
         this.params.previousOutTime = this.previousOutTime;
         this.params.latterOutTime = this.latterOutTime;
+        this.params.previousYear = this.previousYear;
+        this.params.latterYear = this.latterYear;
+        this.params.previousVolumeNumber = this.previousVolumeNumber;
+        this.params.latterVolumeNumber = this.latterVolumeNumber;
+        this.params.archiveNumber = this.archiveNumber;
         documentList(this.params).then(res => {
           this.barCode = "";
           this.loading = false;
@@ -235,10 +358,30 @@
       selectStateChange(value) {
         this.searchState = value;
       },
+      selectType4AddChange(value) {
+        this.type4Add = value;
+      },
       outStore(val) {
         this.params.id = val;
         documentOutStore(this.params).then(res => {
           if (res.resultCode === ERR_OK) {
+            if (res.data.resultCode === ERR_OK) {
+              this.$message({
+                type: 'success',
+                message: res.data.resultMessage,
+                duration: 1500
+              });
+            }
+            this._loadData();
+          }
+        })
+      },
+      getDocumentType() {
+        documentTypeAll().then(res => {
+          if (res.resultCode === ERR_OK) {
+            this.type4AddOptions = res.data;
+            this.selectType4Add = res.data[1].name;
+            this.type4Add = res.data[1].type;
             this._loadData();
           }
         })
@@ -278,6 +421,17 @@
         this.params.name4Add = this.name4Add;
         this.params.barCode4Add = this.barCode4Add;
         this.params.position4Add = this.position4Add;
+        this.params.archiveNumber4Add = this.archiveNumber4Add;
+        this.params.startTime4Add = this.startTime4Add;
+        this.params.endTime4Add = this.endTime4Add;
+        this.params.volume4Add = this.volume4Add;
+        this.params.share4Add = this.share4Add;
+        this.params.storeLimit4Add = this.storeLimit4Add;
+        this.params.year4Add = this.year4Add;
+        this.params.volumeNumber4Add = this.volumeNumber4Add;
+        this.params.startCertificate4Add = this.startCertificate4Add;
+        this.params.endCertificate4Add = this.endCertificate4Add;
+        this.params.type4Add = this.type4Add;
         documentSave(this.params).then(res => {
           if (res.data.resultCode === ERR_OK) {
             this.$message({
@@ -365,6 +519,17 @@
         this.name4Add = "";
         this.barCode4Add = "";
         this.position4Add = "";
+        this.archiveNumber4Add = "";
+        this.startTime4Add = "";
+        this.endTime4Add = "";
+        this.volume4Add = "";
+        this.share4Add = "";
+        this.storeLimit4Add = "";
+        this.year4Add = "";
+        this.volumeNumber4Add = "";
+        this.startCertificate4Add = "";
+        this.endCertificate4Add = "";
+        this.type4Add = "";
         this._loadData()
       },
       cleanSearch () {
@@ -377,7 +542,13 @@
         this.latterInTime = "";
         this.previousOutTime = "";
         this.latterOutTime = "";
+        this.previousYear = "";
+        this.latterYear = "";
+        this.previousVolumeNumber = "";
+        this.latterVolumeNumber = "";
+        this.archiveNumber = "";
         this.searchState = -2;
+        this.selectState = "在库";
         this._loadData()
       },
       handleSizeChange (val) { // 改变显示条数

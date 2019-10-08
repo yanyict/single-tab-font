@@ -3,8 +3,8 @@
         <el-row>
             <el-col :span="15" class='logo-container'>
               <el-row class="logo-box">
-                <i class="wj-logo"></i>
-                <!-- <span>等级保护综合管理平台</span> -->
+                <!--<i class="wj-logo"></i>-->
+                <span>档案综合管理平台</span>
               </el-row>
             </el-col>
             <div class="topbar-account topbar-btn" style="padding-right:50px;">

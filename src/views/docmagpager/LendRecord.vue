@@ -3,18 +3,44 @@
     <div class="header">
       <div>
         条形码：
-        <el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small" v-model.trim="barCode" placeholder="请输入内容">
+        <el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 200px;" size="small" v-model.trim="barCode" placeholder="请输入内容">
+        </el-input>
+      </div>
+      <div>
+        全宗号：
+        <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="archiveNumber" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
         文件名：
-        <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="name" placeholder="请输入内容">
+        <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="name" placeholder="请输入内容">
         </el-input>
       </div>
       <div>
         借阅人：
         <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="renderTemp" placeholder="请输入内容">
         </el-input>
+      </div>
+      <div>
+        年份：
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="previousYear" placeholder="请输入内容">
+        </el-input>
+        到
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="latterYear" placeholder="请输入内容">
+        </el-input>
+      </div>
+    </div>
+    <div class="header">
+      <div>
+        第
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="previousVolumeNumber"
+                  placeholder="请输入内容">
+        </el-input>
+        到
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="latterVolumeNumber"
+                  placeholder="请输入内容">
+        </el-input>
+        卷(盒)
       </div>
       <div>
         起始时间：
@@ -41,12 +67,10 @@
       <el-button size="small" @click="handleIconSearchClick" icon="el-icon-plus" type="primary">搜索</el-button>
       <el-button size="small" @click="cleanSearch" icon="el-icon-plus" type="primary">清空</el-button>
     </div>
-    <el-table
-      :data="tableData"
-    >
-      <el-table-column label="ID">
+    <el-table :data="tableData">
+      <el-table-column width="80%" label="全宗号">
         <template slot-scope="scope">
-          <span>{{scope.row.id}}</span>
+          <span>{{scope.row.archiveNumber}}</span>
         </template>
       </el-table-column>
       <el-table-column label="条形码">
@@ -54,12 +78,31 @@
           <span>{{scope.row.barCode}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="文件名">
+      <el-table-column width="80%" label="文件名">
         <template slot-scope="scope">
           <span>{{scope.row.name}}</span>
         </template>
+      </el-table-column><el-table-column width="80%"  label="年份">
+      <template slot-scope="scope">
+        <span>{{scope.row.year}}</span>
+      </template>
+    </el-table-column>
+      <el-table-column width="100%"  label="第几卷(盒)">
+        <template slot-scope="scope">
+          <span>{{ scope.row.volumeNumber}}</span>
+        </template>
       </el-table-column>
-      <el-table-column label="动作">
+      <el-table-column label="凭证号">
+        <template slot-scope="scope">
+          <span>{{ scope.row.startCertificate}}</span><span v-if="scope.row.startCertificate != null">至</span><span>{{ scope.row.endCertificate}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="档案类别">
+        <template slot-scope="scope">
+          <span>{{ scope.row.type | typeName}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column width="80%" label="动作">
         <template slot-scope="scope">
           <span>{{scope.row.state | stateName}}</span>
         </template>
@@ -148,6 +191,10 @@
         if (1 == state) return "入库";
         if (2 == state) return "借出";
         if (3 == state) return "归还";
+      },
+      typeName (type) {
+        if (1 == type) return "会计档案"
+        else return "会计凭证"
       }
     },
     computed: {
@@ -171,6 +218,11 @@
         this.params.render = this.renderTemp;
         this.params.previousTime = this.previousTime;
         this.params.latterTime = this.latterTime;
+        this.params.previousYear = this.previousYear;
+        this.params.latterYear = this.latterYear;
+        this.params.previousVolumeNumber = this.previousVolumeNumber;
+        this.params.latterVolumeNumber = this.latterVolumeNumber;
+        this.params.archiveNumber = this.archiveNumber;
         lendRecordList(this.params).then(res => {
           this.barCode = "";
           this.loading = false;
@@ -244,7 +296,13 @@
         this.renderTemp = "";
         this.previousTime = "";
         this.latterTime = "";
+        this.previousYear = "";
+        this.latterYear = "";
+        this.previousVolumeNumber = "";
+        this.latterVolumeNumber = "";
+        this.archiveNumber = "";
         this.searchState = -1;
+        this.selectState = "全部";
         this._loadData()
       },
       handleSizeChange(val)

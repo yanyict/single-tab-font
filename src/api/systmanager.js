@@ -262,6 +262,9 @@ export const reqDataPermissionUser = params => { // 获取共享来源/目标的
 export const documentList = params => {
   return axios.post(`${BASE_URL}/document/list.jhtml`, params).then(res => res.data)
 }
+export const documentWarnList = params => {
+  return axios.post(`${BASE_URL}/document/warnList.jhtml`, params).then(res => res.data)
+}
 export const getBarCode = params => {
   return axios.post(`${BASE_URL}/document/getBarCode.jhtml`, params).then(res => res.data)
 }
@@ -276,6 +279,18 @@ export const documentLend = params => {
 }
 export const documentReturn = params => {
   return axios.post(`${BASE_URL}/document/documentReturn.jhtml`, params).then(res => res.data)
+}
+export const documentTypeList = params => {
+  return axios.post(`${BASE_URL}/documentType/list.jhtml`, params).then(res => res.data)
+}
+export const documentTypeAll = params => {
+  return axios.post(`${BASE_URL}/documentType/all.jhtml`, params).then(res => res.data)
+}
+export const documentTypeSave = params => {
+  return axios.post(`${BASE_URL}/documentType/save.jhtml`, params).then(res => res.data)
+}
+export const documentTypeDelete = params => {
+  return axios.post(`${BASE_URL}/documentType/deleteById.jhtml`, params).then(res => res.data)
 }
 export const lendRecordList = params => {
   return axios.post(`${BASE_URL}/lendReocrd/list.jhtml`, params).then(res => res.data)
