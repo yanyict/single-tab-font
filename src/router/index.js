@@ -58,7 +58,7 @@ export default new Router({
         {path: 'document/documentstore', meta: { name: '档案管理' }, component: DocumentStore},
         {path: 'document/documentlend', meta: { name: '文档借阅管理' }, component: DocumentLend},
         {path: 'document/documentwarn', meta: { name: '到期提醒' }, component: DocumentWarn},
-        {path: 'document/documenttype', meta: { name: '档案类别' }, component: DocumentType},
+        {path: 'document/documenttype', meta: { name: '数据字典' }, component: DocumentType},
         {path: 'document/lendrecord', meta: { name: '文档记录管理' }, component: LendRecord},
         // {path: 'kq/safetymanagemer', meta: { name: '安全管理' }, component: SafeManeger},
       ]

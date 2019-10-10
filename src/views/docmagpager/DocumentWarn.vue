@@ -2,65 +2,65 @@
   <div class="base-box role-manager-box">
     <div class="header">
       <!--<div>-->
-        <!--条形码：-->
-        <!--<el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small"-->
-                  <!--v-model.trim="barCode"-->
-                  <!--placeholder="请输入内容">-->
-        <!--</el-input>-->
+      <!--条形码：-->
+      <!--<el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small"-->
+      <!--v-model.trim="barCode"-->
+      <!--placeholder="请输入内容">-->
+      <!--</el-input>-->
       <!--</div>-->
       <!--<div>-->
-        <!--文件名：-->
-        <!--<el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="name" placeholder="请输入内容">-->
-        <!--</el-input>-->
+      <!--文件名：-->
+      <!--<el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="name" placeholder="请输入内容">-->
+      <!--</el-input>-->
       <!--</div>-->
       <!--<div>-->
-        <!--借阅人：-->
-        <!--<el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="renderTemp" placeholder="请输入内容">-->
-        <!--</el-input>-->
+      <!--借阅人：-->
+      <!--<el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="renderTemp" placeholder="请输入内容">-->
+      <!--</el-input>-->
       <!--</div>-->
       <!--<div>-->
-        <!--起始借出时间：-->
-        <!--<el-date-picker style="width: 150px;"-->
-                        <!--v-model="previousLendTime"-->
-                        <!--type="date"-->
-                        <!--placeholder="日期">-->
-        <!--</el-date-picker>-->
+      <!--起始借出时间：-->
+      <!--<el-date-picker style="width: 150px;"-->
+      <!--v-model="previousLendTime"-->
+      <!--type="date"-->
+      <!--placeholder="日期">-->
+      <!--</el-date-picker>-->
       <!--</div>-->
       <!--<div>-->
-        <!--截止借出时间：-->
-        <!--<el-date-picker style="width: 150px;"-->
-                        <!--v-model="latterLendTime"-->
-                        <!--type="date"-->
-                        <!--placeholder="日期">-->
-        <!--</el-date-picker>-->
+      <!--截止借出时间：-->
+      <!--<el-date-picker style="width: 150px;"-->
+      <!--v-model="latterLendTime"-->
+      <!--type="date"-->
+      <!--placeholder="日期">-->
+      <!--</el-date-picker>-->
       <!--</div>-->
       <!--<div>-->
-        <!--起始归还时间：-->
-        <!--<el-date-picker style="width: 150px;"-->
-                        <!--v-model="previousReturnTime"-->
-                        <!--type="date"-->
-                        <!--placeholder="日期">-->
-        <!--</el-date-picker>-->
+      <!--起始归还时间：-->
+      <!--<el-date-picker style="width: 150px;"-->
+      <!--v-model="previousReturnTime"-->
+      <!--type="date"-->
+      <!--placeholder="日期">-->
+      <!--</el-date-picker>-->
       <!--</div>-->
       <!--<div>-->
-        <!--截止归还时间：-->
-        <!--<el-date-picker style="width: 150px;"-->
-                        <!--v-model="latterReturnTime"-->
-                        <!--type="date"-->
-                        <!--placeholder="日期">-->
-        <!--</el-date-picker>-->
+      <!--截止归还时间：-->
+      <!--<el-date-picker style="width: 150px;"-->
+      <!--v-model="latterReturnTime"-->
+      <!--type="date"-->
+      <!--placeholder="日期">-->
+      <!--</el-date-picker>-->
       <!--</div>-->
       <!--<div>-->
-        <!--状态：-->
-        <!--<el-select v-model="selectState" @change="selectStateChange" placeholder="请选择" style="width: 100px;">-->
-          <!--<el-option v-for="item in stateOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>-->
-        <!--</el-select>-->
+      <!--状态：-->
+      <!--<el-select v-model="selectState" @change="selectStateChange" placeholder="请选择" style="width: 100px;">-->
+      <!--<el-option v-for="item in stateOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>-->
+      <!--</el-select>-->
       <!--</div>-->
       <!--<el-button style="float:right" size="small" @click="handleIconSearchClick" icon="el-icon-plus" type="primary">搜索</el-button>-->
       <!--<el-button style="float:right" size="small" @click="cleanSearch" icon="el-icon-plus" type="primary">清空</el-button>-->
     </div>
     <el-table
-      :data="tableData"
+      :data="tableData" :row-style="changeRowBackgroundColor"
     >
       <el-table-column width="80%" label="ID">
         <template slot-scope="scope">
@@ -77,12 +77,12 @@
           <span>{{scope.row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="80%"  label="年份">
+      <el-table-column width="80%" label="年份">
         <template slot-scope="scope">
           <span>{{scope.row.year}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="100%"  label="第几卷(盒)">
+      <el-table-column width="100%" label="第几卷(盒)">
         <template slot-scope="scope">
           <span>{{ scope.row.volumeNumber}}</span>
         </template>
@@ -151,6 +151,18 @@
     data () {
       return {
         tableData: [],
+        changeRowBackgroundColor({row, rowIndex}) {
+          console.log(row)
+          var date = new Date()
+          var now = Date.parse(date);
+          var latterDate = now + 7 * 24 * 60 * 60 * 1000;
+          if (row.returnTime <= now) {
+            return 'background-color: red'
+          }
+          if (row.returnTime <= latterDate) {
+            return 'background-color: orange'
+          }
+        },
         itemData: {},
         barCode: '',
         previousLendTime: '',
