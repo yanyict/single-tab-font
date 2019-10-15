@@ -1,5 +1,15 @@
 <template>
   <div class="base-box role-manager-box">
+    <el-dialog
+      title="确认删除"
+      :visible.sync="dialogVisible"
+      width="12%"
+      :before-close="handleClose">
+      <!--<span slot="footer" class="dialog-footer">-->
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogConfirm">确 定</el-button>
+      <!--</span>-->
+    </el-dialog>
     <div class="header">
       <div>
         文档类型：
@@ -19,7 +29,8 @@
       </div>
       <div>
         全宗号：
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="archiveNumber4Add" placeholder="请输入内容">
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="archiveNumber4Add"
+                  placeholder="请输入内容">
         </el-input>
       </div>
       <div>
@@ -45,7 +56,8 @@
       </div>
       <div>
         共
-        <el-input :disabled="type4Add===1?false:true" maxlength="50" style="width: 100px;" size="small" v-model.trim="share4Add" placeholder="请输入内容">
+        <el-input :disabled="type4Add===1?false:true" maxlength="50" style="width: 100px;" size="small"
+                  v-model.trim="share4Add" placeholder="请输入内容">
         </el-input>
         份
       </div>
@@ -75,15 +87,17 @@
       </div>
       <div>
         凭证号：
-        <el-input :disabled="type4Add===2?false:true" maxlength="50" style="width: 100px;" size="small" v-model.trim="startCertificate4Add" placeholder="请输入内容">
+        <el-input :disabled="type4Add===2?false:true" maxlength="50" style="width: 100px;" size="small"
+                  v-model.trim="startCertificate4Add" placeholder="请输入内容">
         </el-input>
         至
-        <el-input :disabled="type4Add===2?false:true" maxlength="50" style="width: 100px;" size="small" v-model.trim="endCertificate4Add" placeholder="请输入内容">
+        <el-input :disabled="type4Add===2?false:true" maxlength="50" style="width: 100px;" size="small"
+                  v-model.trim="endCertificate4Add" placeholder="请输入内容">
         </el-input>
       </div>
       <el-button style="float:right" size="small" @click="createBarCode" icon="el-icon-plus" type="primary">生成条形码
       </el-button>
-      <el-button style="float:right" size="small" @click="saveDocument" icon="el-icon-plus" type="primary">入库
+      <el-button style="float:right" size="small" @click="saveDocument" icon="el-icon-plus" type="primary">添加
       </el-button>
       <el-button style="float:right" size="small" @click="cleanSave" icon="el-icon-plus" type="primary">清空</el-button>
     </div>
@@ -120,10 +134,12 @@
       </div>
       <div>
         第
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="previousVolumeNumber" placeholder="请输入内容">
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="previousVolumeNumber"
+                  placeholder="请输入内容">
         </el-input>
         到
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="latterVolumeNumber" placeholder="请输入内容">
+        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="latterVolumeNumber"
+                  placeholder="请输入内容">
         </el-input>
         卷(盒)
       </div>
@@ -210,9 +226,9 @@
         </template>
       </el-table-column>
       <!--<el-table-column label="入库状态">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span>{{ scope.row.state | stateName}}</span>-->
-        <!--</template>-->
+      <!--<template slot-scope="scope">-->
+      <!--<span>{{ scope.row.state | stateName}}</span>-->
+      <!--</template>-->
       <!--</el-table-column>-->
       <el-table-column label="档案类别">
         <template slot-scope="scope">
@@ -220,20 +236,20 @@
         </template>
       </el-table-column>
       <!--<el-table-column label="入库时间">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span>{{ scope.row.inTime | formatDate}}</span>-->
-        <!--</template>-->
+      <!--<template slot-scope="scope">-->
+      <!--<span>{{ scope.row.inTime | formatDate}}</span>-->
+      <!--</template>-->
       <!--</el-table-column>-->
       <!--<el-table-column label="出库时间">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span>{{ scope.row.outTime | formatDate}}</span>-->
-        <!--</template>-->
+      <!--<template slot-scope="scope">-->
+      <!--<span>{{ scope.row.outTime | formatDate}}</span>-->
+      <!--</template>-->
       <!--</el-table-column>-->
-      <!--<el-table-column label="操作">-->
-        <!--<template slot-scope="scope">-->
-          <!--<el-button v-if="scope.row.state != 0" @click="outStore(scope.row.id)">出库</el-button>-->
-        <!--</template>-->
-      <!--</el-table-column>-->
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button v-if="scope.row.state != 0" @click="outStore(scope.row.id)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <div class="page-box">
       <el-pagination
@@ -271,6 +287,8 @@
         latterOutTime: '',
         startTime4Add: '',
         endTime4Add: '',
+        dialogVisible: false,
+        deleteConfirm: false,
         stateOptions: [{
           value: '0',
           label: '出库'
@@ -361,8 +379,8 @@
       selectType4AddChange(value) {
         this.type4Add = value;
       },
-      outStore(val) {
-        this.params.id = val;
+      dialogConfirm() {
+        this.dialogVisible = false;
         documentOutStore(this.params).then(res => {
           if (res.resultCode === ERR_OK) {
             if (res.data.resultCode === ERR_OK) {
@@ -375,6 +393,10 @@
             this._loadData();
           }
         })
+      },
+      outStore(val) {
+        this.dialogVisible = true;
+        this.params.id = val;
       },
       getDocumentType() {
         documentTypeAll().then(res => {

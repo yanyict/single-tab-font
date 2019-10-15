@@ -117,7 +117,7 @@
           <span>{{ scope.row.startCertificate}}</span><span v-if="scope.row.startCertificate != null">至</span><span>{{ scope.row.endCertificate}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="档案类别">
+      <el-table-column width="80%" label="档案类别">
         <template slot-scope="scope">
           <span>{{ scope.row.type | typeName}}</span>
         </template>
