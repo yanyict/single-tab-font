@@ -1,71 +1,77 @@
 <template>
   <div class="base-box role-manager-box">
     <div class="header">
-      <div>
-        条形码：
-        <el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 200px;" size="small" v-model.trim="barCode" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        全宗号：
-        <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="archiveNumber" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        文件名：
-        <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="name" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        借阅人：
-        <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="renderTemp" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        年份：
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="previousYear" placeholder="请输入内容">
-        </el-input>
-        到
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="latterYear" placeholder="请输入内容">
-        </el-input>
-      </div>
-    </div>
-    <div class="header">
-      <div>
-        第
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="previousVolumeNumber"
-                  placeholder="请输入内容">
-        </el-input>
-        到
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="latterVolumeNumber"
-                  placeholder="请输入内容">
-        </el-input>
-        卷(盒)
-      </div>
-      <div>
-        起始时间：
-        <el-date-picker style="width: 150px;"
-                        v-model="previousTime"
-                        type="date"
-                        placeholder="日期">
-        </el-date-picker>
-      </div>
-      <div>
-        截止时间：
-        <el-date-picker style="width: 150px;"
+      <el-row>
+        <el-col :span="22">
+          <el-form :inline="true" size="small">
+            <el-form-item label="条形码：">
+              <el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 200px;" size="small" v-model.trim="barCode" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="全宗号：">
+              <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="archiveNumber" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="文件名：">
+              <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="name" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="借阅人：">
+              <el-input maxlength="20" style="width: 150px;" size="small" v-model.trim="renderTemp" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="年份：">
+              <el-input maxlength="50" style="width: 150px;" size="small" v-model.trim="previousYear" placeholder="请输入内容">
+              </el-input>
+              到
+              <el-input maxlength="50" style="width: 150px;" size="small" v-model.trim="latterYear" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              第
+              <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="previousVolumeNumber"
+                        placeholder="请输入内容">
+              </el-input>
+              到
+              <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="latterVolumeNumber"
+                        placeholder="请输入内容">
+              </el-input>
+              卷(盒)
+            </el-form-item>
+            <el-form-item label="起始时间：">
+              <el-date-picker style="width: 150px;"
+                              v-model="previousTime"
+                              type="date"
+                              placeholder="日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="截止时间：">
+              <el-date-picker style="width: 150px;"
                         v-model="latterTime"
                         type="date"
                         placeholder="日期">
-        </el-date-picker>
-      </div>
-      <div>
-        动作：
-        <el-select v-model="selectState" @change="selectStateChange" placeholder="请选择" style="width: 100px;">
-          <el-option v-for="item in stateOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
-        </el-select>
-      </div>
-      <el-button size="small" @click="handleIconSearchClick" icon="el-icon-plus" type="primary">搜索</el-button>
-      <el-button size="small" @click="cleanSearch" icon="el-icon-plus" type="primary">清空</el-button>
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="动作：">
+              <el-select v-model="selectState" @change="selectStateChange" placeholder="请选择" style="width: 100px;">
+                <el-option v-for="item in stateOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+              </el-select>
+            </el-form-item>
+          
+
+          </el-form>
+        </el-col>
+        <el-col :span="2">
+          <el-form :inline="true" size="small" style="text-align: right;">
+            <el-form-item>
+              <el-button size="small" @click="handleIconSearchClick" icon="el-icon-plus" type="primary">搜索</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button size="small" @click="cleanSearch" icon="el-icon-plus" type="primary">清空</el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
     </div>
     <el-table :data="tableData">
       <el-table-column width="80%" label="全宗号">

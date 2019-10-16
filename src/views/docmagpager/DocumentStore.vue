@@ -11,97 +11,161 @@
       <!--</span>-->
     </el-dialog>
     <div class="header">
-      <div>
-        文档类型：
-        <el-select v-model="selectType4Add" @change="selectType4AddChange" placeholder="请选择" style="width: 150px;">
-          <el-option v-for="item in type4AddOptions" :key="item.type" :value="item.type" :label="item.name"></el-option>
-        </el-select>
-      </div>
-      <div>
-        条形码：
-        <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="barCode4Add" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        文件名：
-        <el-input maxlength="20" style="width: 100px;" size="small" v-model.trim="name4Add" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        全宗号：
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="archiveNumber4Add"
-                  placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        自
-        <el-date-picker style="width: 150px;"
-                        v-model="startTime4Add"
-                        type="date"
-                        placeholder="日期">
-        </el-date-picker>
-        起至
-        <el-date-picker style="width: 150px;"
-                        v-model="endTime4Add"
-                        type="date"
-                        placeholder="日期">
-        </el-date-picker>
-      </div>
-      <div>
-        本盒共
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="volume4Add" placeholder="请输入内容">
-        </el-input>
-        <span v-if="type4Add==1">卷</span>
-        <span v-if="type4Add==2">册</span>
-      </div>
-      <div>
-        共
-        <el-input :disabled="type4Add===1?false:true" maxlength="50" style="width: 100px;" size="small"
-                  v-model.trim="share4Add" placeholder="请输入内容">
-        </el-input>
-        份
-      </div>
+      <el-row>
+        <el-col :span="22">
+          <el-form :inline="true" size="small">
+            <el-form-item label="文档类型：">
+              <el-select v-model="selectType4Add" @change="selectType4AddChange" placeholder="请选择" style="width: 180px;">
+                <el-option v-for="item in type4AddOptions" :key="item.type" :value="item.type" :label="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="条形码：">
+              <el-input maxlength="20" style="width: 180px;" v-model.trim="barCode4Add" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="文件名：">
+              <el-input maxlength="20" style="width: 180px;" v-model.trim="name4Add" placeholder="请输入内容"></el-input>
+            </el-form-item>
+            <el-form-item label="全宗号：">
+              <el-input maxlength="50" style="width: 180px;" v-model.trim="archiveNumber4Add"
+                      placeholder="请输入内容"></el-input>
+            </el-form-item>
+            <el-form-item>
+              自
+              <el-date-picker style="width: 180px;"
+                              v-model="startTime4Add"
+                              type="date"
+                              placeholder="日期">
+              </el-date-picker>
+              起至
+              <el-date-picker style="width: 180px;"
+                              v-model="endTime4Add"
+                              type="date"
+                              placeholder="日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item>
+              <span>本盒共</span>
+              <el-input maxlength="50" style="width: 120px;"  v-model.trim="volume4Add" placeholder="请输入内容">
+              </el-input>
+              <span v-if="type4Add==1">卷</span>
+              <span v-if="type4Add==2">册</span>
+            </el-form-item>
+            <el-form-item>
+              <span>共</span>
+              <el-input :disabled="type4Add===1?false:true" maxlength="50" style="width: 120px;" v-model.trim="share4Add" placeholder="请输入内容">
+              </el-input>
+              <span>份</span>
+            </el-form-item>
+            <el-form-item label="位置：">
+              <el-input maxlength="50" style="width: 300px;" v-model.trim="position4Add" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="保管期限：">
+              <el-input maxlength="50" style="width: 180px;" v-model.trim="storeLimit4Add" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="年份：">
+              <el-input maxlength="50" style="width: 180px;" v-model.trim="year4Add" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <span>第</span>
+              <el-input maxlength="50" v-model.trim="volumeNumber4Add" style="width: 130px;" placeholder="请输入">
+              </el-input>
+              <span v-if="type4Add==1">卷</span>
+              <span v-if="type4Add==2">盒</span>
+            </el-form-item>
+            <el-form-item label="凭证号：">
+              
+              <el-input :disabled="type4Add===2?false:true" maxlength="50" size="small" style="width: 170px;"
+                        v-model.trim="startCertificate4Add" placeholder="请输入内容">
+              </el-input>
+              至
+              <el-input :disabled="type4Add===2?false:true" maxlength="50" size="small" style="width: 170px;"
+                        v-model.trim="endCertificate4Add" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+          </el-form>
+        </el-col>
+        <el-col :span="2">
+          <el-form size="small" :inline="true" style="text-align: right;">
+            <el-form-item>
+              <el-button size="small" @click="createBarCode" icon="el-icon-plus" type="primary">生成条形码
+              </el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button size="small" @click="saveDocument" icon="el-icon-plus" type="primary">添加
+              </el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button size="small" @click="cleanSave" icon="el-icon-plus" type="primary">清空
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
+    </div>
+    <div style="display: block;height: 1px;width: 100%;margin-bottom: 10px;background-color: #dbe9f3;position: relative;">
     </div>
     <div class="header">
-      <div>
-        位置：
-        <el-input maxlength="50" style="width: 300px;" size="small" v-model.trim="position4Add" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        保管期限：
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="storeLimit4Add" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        年份：
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="year4Add" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        第
-        <el-input maxlength="50" style="width: 100px;" size="small" v-model.trim="volumeNumber4Add" placeholder="请输入内容">
-        </el-input>
-        <span v-if="type4Add==1">卷</span>
-        <span v-if="type4Add==2">盒</span>
-      </div>
-      <div>
-        凭证号：
-        <el-input :disabled="type4Add===2?false:true" maxlength="50" style="width: 100px;" size="small"
-                  v-model.trim="startCertificate4Add" placeholder="请输入内容">
-        </el-input>
-        至
-        <el-input :disabled="type4Add===2?false:true" maxlength="50" style="width: 100px;" size="small"
-                  v-model.trim="endCertificate4Add" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <el-button style="float:right" size="small" @click="createBarCode" icon="el-icon-plus" type="primary">生成条形码
-      </el-button>
-      <el-button style="float:right" size="small" @click="saveDocument" icon="el-icon-plus" type="primary">添加
-      </el-button>
-      <el-button style="float:right" size="small" @click="cleanSave" icon="el-icon-plus" type="primary">清空</el-button>
+      <el-row>
+        <el-col :span="22">
+          <el-form :inline="true" size="small">
+            <el-form-item label="条形码：">
+               <el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 170px;" size="small"
+                  v-model.trim="barCode"
+                  placeholder="请输入内容"> </el-input>
+            </el-form-item>
+            <el-form-item label="全宗号：">
+              <el-input maxlength="20" style="width: 170px;" size="small" v-model.trim="archiveNumber" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="文件名：">
+              <el-input maxlength="20" style="width: 170px;" size="small" v-model.trim="name" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="位置：">
+              <el-input maxlength="50" style="width: 300px;" size="small" v-model.trim="position" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="年份：">
+              <el-input maxlength="50" style="width: 120px;" size="small" v-model.trim="previousYear" placeholder="请输入内容">
+              </el-input>
+              <span style="margin: 0 10px;">到</span>
+              <el-input maxlength="50" style="width: 120px;" size="small" v-model.trim="latterYear" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <span>第</span>
+              <el-input maxlength="50" style="width: 120px;" size="small" v-model.trim="previousVolumeNumber"
+                        placeholder="请输入内容">
+              </el-input>
+              <span style="margin: 0 10px;">到</span>
+              <el-input maxlength="50" style="width: 120px;" size="small" v-model.trim="latterVolumeNumber"
+                        placeholder="请输入内容">
+              </el-input>
+              <span>卷(盒)</span>
+            </el-form-item>
+            <el-form-item>
+
+            </el-form-item>
+          </el-form>
+        </el-col>
+
+        <el-col :span="2">
+          <el-form :inline="true" size="small" style="text-align: right;">
+            <el-form-item>
+              <el-button size="small" @click="handleIconSearchClick" icon="el-icon-plus" type="primary">搜索</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button size="small" @click="cleanSearch" icon="el-icon-plus" type="primary">清空</el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
     </div>
-    <div class="header">
+    <!-- <div class="header">
       <div>
         条形码：
         <el-input maxlength="20" @keyup.enter.native="handleIconSearchClick" style="width: 100px;" size="small"
@@ -183,7 +247,7 @@
       </div>
       <el-button size="small" @click="handleIconSearchClick" icon="el-icon-plus" type="primary">搜索</el-button>
       <el-button size="small" @click="cleanSearch" icon="el-icon-plus" type="primary">清空</el-button>
-    </div>
+    </div> -->
     <el-table :data="tableData">
       <el-table-column label="全宗号">
         <template slot-scope="scope">
@@ -277,6 +341,7 @@
     },
     data () {
       return {
+        value1: [], // TODO
         tableData: [],
         itemData: {},
         barCode: '',
@@ -309,7 +374,22 @@
         },
         currentIndex: 1,
         total: 0,
-        loading: false
+        loading: false,
+
+        name:"",
+        name4Add:"",
+        position4Add:"",
+        archiveNumber:"",
+        archiveNumber4Add:"",
+        volume4Add:"",
+        share4Add:"",
+        storeLimit4Add:"",
+        year4Add:"",
+        volumeNumber4Add:"",
+        startCertificate4Add:"",
+        endCertificate4Add:"",
+        type4Add:"",
+        latterYear:""
       }
     },
     created () {
@@ -587,6 +667,15 @@
 //      isShowFunc (func) { // 查看是否有功能权限
 //        return isHasPermission(func)
 //      }
+      handleClose () {
+
+      }
     }
   }
 </script>
+
+<style lang="scss" scoped>
+// .el-form-item {
+//   min-width: 200px;
+// }
+</style>

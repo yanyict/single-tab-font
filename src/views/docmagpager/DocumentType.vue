@@ -1,18 +1,26 @@
 <template>
   <div class="base-box role-manager-box">
     <div class="header">
-      <div>
-        类型编码：
-        <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="type" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <div>
-        类型名称：
-        <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="name" placeholder="请输入内容">
-        </el-input>
-      </div>
-      <el-button style="float:right" size="small" @click="saveDocumentType" icon="el-icon-plus" type="primary">保存</el-button>
-      <el-button style="float:right" size="small" @click="cleanSave" icon="el-icon-plus" type="primary">清空</el-button>
+      <el-row style="width:100%;">
+        <el-col :span="20">
+          <el-form :inline="true" size="small">
+            <el-form-item label="类型编码：">
+              <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="type" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="类型名称：">
+              <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="name" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button size="small" @click="saveDocumentType" icon="el-icon-plus" type="primary">保存</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button size="small" @click="cleanSave" icon="el-icon-plus" type="primary">清空</el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
     </div>
     <el-table :data="tableData">
       <el-table-column label="ID">
