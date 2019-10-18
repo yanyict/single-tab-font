@@ -15,7 +15,7 @@
         <el-col :span="22">
           <el-form :inline="true" size="small">
             <el-form-item label="文档类型：">
-              <el-select v-model="selectType4Add" @change="selectType4AddChange" placeholder="请选择" style="width: 180px;">
+              <el-select v-model="type4AddName" @change="selectType4AddChange" placeholder="请选择" style="width: 180px;">
                 <el-option v-for="item in type4AddOptions" :key="item.type" :value="item.type" :label="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -58,16 +58,22 @@
               <span>份</span>
             </el-form-item>
             <el-form-item label="位置：">
-              <el-input maxlength="50" style="width: 300px;" v-model.trim="position4Add" placeholder="请输入内容">
-              </el-input>
+              <el-select v-model="position4AddName" @change="selectPosition4AddChange" placeholder="请选择" style="width: 180px;">
+                <el-option v-for="item in position4AddOptions" :key="item.type" :value="item.type" :label="item.name"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="保管期限：">
               <el-input maxlength="50" style="width: 180px;" v-model.trim="storeLimit4Add" placeholder="请输入内容">
               </el-input>
             </el-form-item>
             <el-form-item label="年份：">
-              <el-input maxlength="50" style="width: 180px;" v-model.trim="year4Add" placeholder="请输入内容">
-              </el-input>
+              <!--<el-input maxlength="50" style="width: 180px;" v-model.trim="year4Add" placeholder="请输入内容">-->
+              <!--</el-input>-->
+              <el-date-picker style="width: 180px;" value-format="yyyy"
+                              v-model="year4Add"
+                              type="year"
+                              placeholder="日期">
+              </el-date-picker>
             </el-form-item>
             <el-form-item>
               <span>第</span>
@@ -77,7 +83,7 @@
               <span v-if="type4Add==2">盒</span>
             </el-form-item>
             <el-form-item label="凭证号：">
-              
+
               <el-input :disabled="type4Add===2?false:true" maxlength="50" size="small" style="width: 170px;"
                         v-model.trim="startCertificate4Add" placeholder="请输入内容">
               </el-input>
@@ -132,7 +138,8 @@
             <el-form-item label="年份：">
               <el-input maxlength="50" style="width: 120px;" size="small" v-model.trim="previousYear" placeholder="请输入内容">
               </el-input>
-              <span style="margin: 0 10px;">到</span>
+              <!--<span style="margin: 0 10px;">到</span>-->
+              到
               <el-input maxlength="50" style="width: 120px;" size="small" v-model.trim="latterYear" placeholder="请输入内容">
               </el-input>
             </el-form-item>
@@ -141,7 +148,8 @@
               <el-input maxlength="50" style="width: 120px;" size="small" v-model.trim="previousVolumeNumber"
                         placeholder="请输入内容">
               </el-input>
-              <span style="margin: 0 10px;">到</span>
+              <!--<span style="margin: 0 10px;">到</span>-->
+              到
               <el-input maxlength="50" style="width: 120px;" size="small" v-model.trim="latterVolumeNumber"
                         placeholder="请输入内容">
               </el-input>
@@ -365,9 +373,10 @@
           label: '全部'
         }],
         selectState: '-2',
-//        type4AddOptions: [{type: 1, name: "证书"}],
         type4AddOptions: [],
-        selectType4Add: '',
+        type4AddName: '',
+        position4AddOptions: [],
+        position4AddName: '',
         params: {
           pageIndex: 1,
           pageSize: 10
@@ -383,12 +392,12 @@
         archiveNumber4Add:"",
         volume4Add:"",
         share4Add:"",
-        storeLimit4Add:"",
+        storeLimit4Add: 10,
         year4Add:"",
         volumeNumber4Add:"",
         startCertificate4Add:"",
         endCertificate4Add:"",
-        type4Add:"",
+        type4Add: 1,
         latterYear:""
       }
     },
@@ -479,11 +488,21 @@
         this.params.id = val;
       },
       getDocumentType() {
-        documentTypeAll().then(res => {
+        var kind_param = {kind: 1};
+        documentTypeAll(kind_param).then(res => {
           if (res.resultCode === ERR_OK) {
             this.type4AddOptions = res.data;
-            this.selectType4Add = res.data[1].name;
+            this.type4AddName = res.data[1].name;
             this.type4Add = res.data[1].type;
+            this._loadData();
+          }
+        })
+        kind_param = {kind: 2};
+        documentTypeAll(kind_param).then(res => {
+          if (res.resultCode === ERR_OK) {
+            this.position4AddOptions = res.data;
+            this.position4AddName = res.data[1].name;
+            this.position4Add = res.data[1].type;
             this._loadData();
           }
         })
@@ -522,7 +541,11 @@
         }
         this.params.name4Add = this.name4Add;
         this.params.barCode4Add = this.barCode4Add;
-        this.params.position4Add = this.position4Add;
+        for (var i = 0; i < this.position4AddOptions.length; i++) {
+            if (this.position4Add == this.position4AddOptions[i].type) {
+              this.params.position4Add = this.position4AddOptions[i].name;
+            }
+        };
         this.params.archiveNumber4Add = this.archiveNumber4Add;
         this.params.startTime4Add = this.startTime4Add;
         this.params.endTime4Add = this.endTime4Add;
@@ -620,18 +643,18 @@
       cleanSave () {
         this.name4Add = "";
         this.barCode4Add = "";
-        this.position4Add = "";
+//        this.position4Add = "";
         this.archiveNumber4Add = "";
         this.startTime4Add = "";
         this.endTime4Add = "";
         this.volume4Add = "";
         this.share4Add = "";
-        this.storeLimit4Add = "";
+        this.storeLimit4Add = 10;
         this.year4Add = "";
         this.volumeNumber4Add = "";
         this.startCertificate4Add = "";
         this.endCertificate4Add = "";
-        this.type4Add = "";
+//        this.type4Add = "";
         this._loadData()
       },
       cleanSearch () {

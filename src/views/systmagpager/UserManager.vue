@@ -2,7 +2,7 @@
 <template>
 <div class="base-box user-manager-box">
   <el-row>
-         <section class="left-box3">
+         <section class="left-box3" v-if="false">
           <el-tree node-key="id"
             class="my-tree"
             highlight-current
@@ -549,7 +549,8 @@ export default {
    .right-box3 {
     padding-left: 20px;
     float: left;
-    width: calc(100% - 200px);
+    /*width: calc(100% - 200px);*/
+    width: calc(100%);
     .is-dot{
       height: 8px;
       width: 3px;

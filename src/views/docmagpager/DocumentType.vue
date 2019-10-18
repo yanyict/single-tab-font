@@ -4,12 +4,21 @@
       <el-row style="width:100%;">
         <el-col :span="20">
           <el-form :inline="true" size="small">
-            <el-form-item label="类型编码：">
-              <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="type" placeholder="请输入内容">
-              </el-input>
+            <el-form-item label="字典类别：">
+              <el-select v-model="selectKindName" @change="selectKind4AddChange" placeholder="请选择" style="width: 180px;">
+                <el-option v-for="item in kind4AddOptions" :key="item.kind" :value="item.kind" :label="item.name"></el-option>
+              </el-select>
             </el-form-item>
-            <el-form-item label="类型名称：">
-              <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="name" placeholder="请输入内容">
+            <!--<el-form-item label="">-->
+              <!--<span v-if="show_params.kind==1">类型编码：</span>-->
+              <!--<span v-if="show_params.kind==2">位置编码：</span>-->
+              <!--<el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="show_params.type" placeholder="请输入内容">-->
+              <!--</el-input>-->
+            <!--</el-form-item>-->
+            <el-form-item label="">
+              <span v-if="show_params.kind==1">类型名称：</span>
+              <span v-if="show_params.kind==2">具体位置：</span>
+              <el-input maxlength="20" style="width: 200px;" size="small" v-model.trim="show_params.name" placeholder="请输入内容">
               </el-input>
             </el-form-item>
             <el-form-item>
@@ -28,12 +37,12 @@
           <span>{{ scope.row.id}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="类型编码">
-        <template slot-scope="scope">
-          <span>{{ scope.row.type}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="类型名称">
+      <!--<el-table-column label="类型编码">-->
+        <!--<template slot-scope="scope">-->
+          <!--<span>{{ scope.row.type}}</span>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <el-table-column label="详情">
         <template slot-scope="scope">
           <span>{{ scope.row.name}}</span>
         </template>
@@ -90,12 +99,17 @@
           label: '全部'
         }],
         selectState: '-2',
-        type4AddOptions: [{
-          value: '1',
-          label: '会计档案'
+        show_params: {
+          kind: 1,
+          type: ""
+        },
+        selectKindName: '档案类别',
+        kind4AddOptions: [{
+          kind: '1',
+          name: '档案类别'
         }, {
-          value: '2',
-          label: '会计凭证'
+          kind: '2',
+          name: '存放位置'
         }],
         selectType4Add: '1',
         params: {
@@ -134,6 +148,7 @@
 //      },
       _loadData (name = '文档') { // 加载列表
         this.loading = true;
+        this.params.kind = this.show_params.kind;
         documentTypeList(this.params).then(res => {
           this.barCode = "";
           this.loading = false;
@@ -154,8 +169,9 @@
       selectStateChange(value) {
         this.searchState = value;
       },
-      selectType4AddChange(value) {
-        this.type4Add = value;
+      selectKind4AddChange(value) {
+        this.show_params.kind = value;
+        this._loadData();
       },
       deleteById(val) {
         this.params.id = val;
@@ -180,7 +196,7 @@
         })
       },
       saveDocumentType () { // 新增
-        if (null == this.name || "" == this.name) {
+        if (null == this.show_params.name || "" == this.show_params.name) {
           this.$message({
             type: 'error',
             message: '类型名称不能为空!',
@@ -188,16 +204,17 @@
           });
           return;
         }
-        if (null == this.type || "" == this.type) {
-          this.$message({
-            type: 'error',
-            message: '类型编码不能为空!',
-            duration: 1500
-          });
-          return;
-        }
-        this.params.name = this.name;
-        this.params.type = this.type;
+//        if (null == this.show_params.type || "" == this.show_params.type) {
+//          this.$message({
+//            type: 'error',
+//            message: '类型编码不能为空!',
+//            duration: 1500
+//          });
+//          return;
+//        }
+        this.params.name = this.show_params.name;
+        this.params.type = this.show_params.type;
+        this.params.kind = this.show_params.kind;
         documentTypeSave(this.params).then(res => {
           if (res.data.resultCode === ERR_OK) {
             this.$message({
@@ -282,14 +299,14 @@
         this._loadData()
       },
       cleanSave () {
-        this.name = "";
-        this.type = "";
+        this.show_params.name = "";
+        this.show_params.type = "";
         this._loadData()
       },
       cleanSearch () {
         this.params.pageIndex = 1;
         this.currentIndex = 1;
-        this.name = "";
+        this.show_params.name = "";
         this.barCode = "";
         this.position = "";
         this.previousInTime = "";

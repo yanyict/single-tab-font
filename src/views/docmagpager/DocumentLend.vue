@@ -30,6 +30,36 @@
               <el-input maxlength="50" style="width: 110px;" size="small" v-model.trim="latterYear" placeholder="请输入内容">
               </el-input>
             </el-form-item>
+            <el-form-item label="凭证号：">
+              <el-input maxlength="20" style="width: 150px;" size="small" v-model.trim="certificate" placeholder="请输入内容">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="借出时间：">
+              <el-date-picker style="width: 150px;"
+                        v-model="previousLendTime"
+                        type="date"
+                        placeholder="日期">
+              </el-date-picker>
+              到
+              <el-date-picker style="width: 150px;"
+                        v-model="latterLendTime"
+                        type="date"
+                        placeholder="日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="归还时间：">
+              <el-date-picker style="width: 150px;"
+                        v-model="previousReturnTime"
+                        type="date"
+                        placeholder="日期">
+              </el-date-picker>
+              到
+              <el-date-picker style="width: 150px;"
+                        v-model="latterReturnTime"
+                        type="date"
+                        placeholder="日期">
+              </el-date-picker>
+            </el-form-item>
             <el-form-item>
               第
               <el-input maxlength="50" style="width: 110px;" size="small" v-model.trim="previousVolumeNumber"
@@ -40,34 +70,6 @@
                         placeholder="请输入内容">
               </el-input>
               卷(盒)
-            </el-form-item>
-            <el-form-item label="起始借出时间：">
-              <el-date-picker style="width: 150px;"
-                        v-model="previousLendTime"
-                        type="date"
-                        placeholder="日期">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="截止借出时间：">
-              <el-date-picker style="width: 150px;"
-                        v-model="latterLendTime"
-                        type="date"
-                        placeholder="日期">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="起始归还时间：">
-              <el-date-picker style="width: 150px;"
-                        v-model="previousReturnTime"
-                        type="date"
-                        placeholder="日期">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="截止归还时间：">
-              <el-date-picker style="width: 150px;"
-                        v-model="latterReturnTime"
-                        type="date"
-                        placeholder="日期">
-              </el-date-picker>
             </el-form-item>
             <el-form-item label="状态：">
               <el-select v-model="selectState" @change="selectStateChange" placeholder="请选择" style="width: 100px;">
@@ -279,6 +281,7 @@
         this.params.previousVolumeNumber = this.previousVolumeNumber;
         this.params.latterVolumeNumber = this.latterVolumeNumber;
         this.params.archiveNumber = this.archiveNumber;
+        this.params.certificate = this.certificate;
         documentList(this.params).then(res => {
           this.barCode = "";
           this.loading = false;
@@ -445,6 +448,7 @@
         this.previousVolumeNumber = "";
         this.latterVolumeNumber = "";
         this.archiveNumber = "";
+        this.certificate = "";
         this.searchState = -2;
         this.selectState = "全部";
         this._loadData()
